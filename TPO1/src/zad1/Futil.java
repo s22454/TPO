@@ -12,8 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.nio.file.StandardOpenOption.*;
 
@@ -22,7 +20,7 @@ public class Futil {
 
         ArrayList<ByteBuffer> list = new ArrayList<>();
 
-        FileVisitor<Path> fileVisitor = new FileVisitor<Path>() {
+        FileVisitor<Path> fileVisitor = new FileVisitor<>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                 System.out.println("Just visited: " + dir);
@@ -34,18 +32,10 @@ public class Futil {
 
                 if (attrs.isRegularFile()) {
                     System.out.println("Processing: " + file);
-
-                    Pattern pattern = Pattern.compile(".*\\.txt");
-                    Matcher matcher = pattern.matcher(String.valueOf(file));
-
-                    if (matcher.find()){
-
-                        Charset                 csIn                    = Charset.forName("Cp1250");
-                        RandomAccessFile        randomAccessFile        = new RandomAccessFile(String.valueOf(file), "rw");
-
-                        try (FileChannel fileChannel = FileChannel.open(file)){
-                            ByteBuffer byteBuffer = ByteBuffer.allocate((int) fileChannel.size());
-                            fileChannel.read(byteBuffer);
+                    if (Files.isRegularFile(file)){
+                            try (FileChannel fileReaderChannel = FileChannel.open(file)){
+                            ByteBuffer byteBuffer = ByteBuffer.allocateDirect((int) fileReaderChannel.size());
+                            fileReaderChannel.read(byteBuffer);
                             byteBuffer.flip();
                             list.add(byteBuffer);
                         }
@@ -71,14 +61,16 @@ public class Futil {
         try {
             Files.walkFileTree(Path.of(dirName), fileVisitor);
 
-            FileChannel         fileWriterChannel   = FileChannel.open(Path.of(resultFileName), CREATE, TRUNCATE_EXISTING, WRITE);
-            Charset             charset             = StandardCharsets.UTF_8;
+            try(FileChannel  fileWriterChannel = FileChannel.open(Path.of(resultFileName), CREATE, TRUNCATE_EXISTING, WRITE)) {
+                ;
+                Charset csIn    = Charset.forName("Cp1250");
+                Charset csOut   = StandardCharsets.UTF_8;
 
-            for (ByteBuffer s : list) {
-                CharBuffer charBuffer = charset.decode(s);
-                fileWriterChannel.write(s);
+                for (ByteBuffer s : list) {
+                    CharBuffer charBuffer = csIn.decode(s);
+                    fileWriterChannel.write(csOut.encode(charBuffer));
+                }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
