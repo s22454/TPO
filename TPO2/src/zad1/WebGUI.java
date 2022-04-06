@@ -20,11 +20,11 @@ public class WebGUI extends JFrame implements ActionListener {
     private JPanel      countryInputPanel;
     private JPanel      cityInputPanel;
     private JPanel      currencyInputPanel;
-    private JPanel      emptyPanel;
+    private JPanel      rightPanel;
     private JFXPanel    jfxPanel;
 
     //country info are
-    private JTextArea   infoTextArea;
+    private JLabel      infoTextArea;
 
     //web view
     WebView             webView;
@@ -33,20 +33,19 @@ public class WebGUI extends JFrame implements ActionListener {
     private JLabel      countryTextArea;
     private JButton     countryConfirmButton;
     private JTextField  countryTextEntry;
-    private JLabel      countryIsDataOk;
 
     //user city input
     private JLabel      cityTextArea;
     private JButton     cityConfirmButton;
     private JTextField  cityTextEntry;
-    private JLabel      cityIsDataOk;
 
     //user currency input
     private JLabel      currencyTextArea;
     private JButton     currencyConfirmButton;
     private JTextField  currencyTextEntry;
-    private JLabel      currencyIsDataOk;
 
+    //service objects
+    
 
     public WebGUI() throws HeadlessException {
 
@@ -64,7 +63,7 @@ public class WebGUI extends JFrame implements ActionListener {
         countryInputPanel   = new JPanel();
         cityInputPanel      = new JPanel();
         currencyInputPanel  = new JPanel();
-        emptyPanel          = new JPanel();
+        rightPanel          = new JPanel();
 
 
         //web view construction
@@ -72,16 +71,34 @@ public class WebGUI extends JFrame implements ActionListener {
         Platform.runLater(this::createJFXContent);
         webPanel.add(jfxPanel);
 
+
         //user input part creation
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
         createButtons();
         buttonsPanel.add(countryInputPanel);
         buttonsPanel.add(cityInputPanel);
         buttonsPanel.add(currencyInputPanel);
+        buttonsPanel.setPreferredSize(new Dimension(500,150));
 
 
+        //info to jPanel
+        infoTextArea = new JLabel();
+        infoTextArea.setPreferredSize(new Dimension(500,450));
+        infoTextArea.setVerticalAlignment(JLabel.TOP);
+        infoTextArea.setText("Informacje");
+        infoPanel.add(infoTextArea);
+
+
+        //panels organization
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.add(buttonsPanel);
+        rightPanel.add(Box.createGlue());
+        rightPanel.add(infoPanel);
+
+
+        //main panel organization
         mainPanel.add(webPanel);
-        mainPanel.add(buttonsPanel);
+        mainPanel.add(rightPanel);
         this.add(mainPanel);
 
         this.pack();
@@ -101,9 +118,6 @@ public class WebGUI extends JFrame implements ActionListener {
         //user country input construction
         countryInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        countryIsDataOk = new JLabel();
-        countryIsDataOk.setText("-");
-        countryInputPanel.add(countryIsDataOk);
 
         countryTextArea = new JLabel();
         countryTextArea.setText("Podaj kraj: ");
@@ -122,10 +136,6 @@ public class WebGUI extends JFrame implements ActionListener {
         //user city input construction
         cityInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        cityIsDataOk = new JLabel();
-        cityIsDataOk.setText("-");
-        cityInputPanel.add(cityIsDataOk);
-
         cityTextArea = new JLabel();
         cityTextArea.setText("Podaj miasto: ");
         cityTextArea.setPreferredSize(new Dimension(100, 20));
@@ -142,10 +152,6 @@ public class WebGUI extends JFrame implements ActionListener {
 
         //user currency input construction
         currencyInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-        currencyIsDataOk = new JLabel();
-        currencyIsDataOk.setText("-");
-        currencyInputPanel.add(currencyIsDataOk);
 
         currencyTextArea = new JLabel();
         currencyTextArea.setText("Podaj walute: ");
@@ -171,6 +177,16 @@ public class WebGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getActionCommand());
+
+        if (e.getSource() == countryConfirmButton){
+
+
+        } else if (e.getSource() == cityConfirmButton){
+
+
+        } else if (e.getSource() == currencyConfirmButton){
+
+
+        }
     }
 }
