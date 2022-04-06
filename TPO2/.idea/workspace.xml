@@ -50,7 +50,7 @@
       <recent name="C:\Users\Mati\Documents\studia\TPO\GIT\TPO\TPO2\lib" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.WebGUI">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-1.8" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -81,8 +81,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.WebGUI" />
+        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -98,7 +98,7 @@
       <workItem from="1648113387757" duration="240000" />
       <workItem from="1649235766958" duration="2380000" />
       <workItem from="1649238181304" duration="638000" />
-      <workItem from="1649240335546" duration="22439000" />
+      <workItem from="1649240335546" duration="23059000" />
     </task>
     <servers />
   </component>

@@ -9,7 +9,6 @@ package zad1;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import sun.util.locale.LanguageTag;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,7 +60,7 @@ public class Service {
             JSONParser parser = new JSONParser();
             JSONObject parse = (JSONObject) parser.parse(bufferedReader.readLine());
             JSONObject rates = (JSONObject) parse.get("rates");
-            double givenCountryRateToEUR = (double) rates.get(currency);
+            double givenCountryRateToEUR = Double.parseDouble(rates.get(currency).toString());
             double thisCountryRateToEUR = (double) rates.get(Currency.getInstance(locale).toString());
 
             double exchangeRate = (1 / givenCountryRateToEUR) * thisCountryRateToEUR;
@@ -77,5 +76,9 @@ public class Service {
 
     public Double getNBPRate() {
         return null;
+    }
+
+    public String getCurrency(){
+        return Currency.getInstance(locale).toString();
     }
 }

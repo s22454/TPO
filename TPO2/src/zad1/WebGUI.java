@@ -213,8 +213,7 @@ public class WebGUI extends JFrame implements ActionListener {
 
 
         } else if (e.getSource() == currencyConfirmButton){
-
-
+            infoTextArea.setText("<html> Kurs wymiany " + service.getCurrency() + " na " + currencyTextEntry.getText() + " to: " + service.getRateFor(currencyTextEntry.getText()));
         }
     }
 }
