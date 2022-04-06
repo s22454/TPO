@@ -16,13 +16,16 @@ public class Service {
     private String country;
 
     //addresses
-    private final String openWeatherAddress = "https://api.openweathermap.org/data/2.5/weather?q=Warsaw&appid=d25d1fc91da69a1211c1044143d394ad";
+    private String openWeatherAddress;
     
     public Service(String country){
         this.country = country;
     }
 
     public String getWeather(String city) {
+
+        openWeatherAddress = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=d25d1fc91da69a1211c1044143d394ad";
+
         try(BufferedReader bufferedReader =
                     new BufferedReader(
                         new InputStreamReader(

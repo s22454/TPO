@@ -4,6 +4,10 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,14 +49,13 @@ public class WebGUI extends JFrame implements ActionListener {
     private JTextField  currencyTextEntry;
 
     //service objects
-    
+    Service             service;
 
     public WebGUI() throws HeadlessException {
 
         //window init
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
 
 
         //panels init
@@ -85,6 +88,7 @@ public class WebGUI extends JFrame implements ActionListener {
         infoTextArea = new JLabel();
         infoTextArea.setPreferredSize(new Dimension(500,450));
         infoTextArea.setVerticalAlignment(JLabel.TOP);
+        infoTextArea.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
         infoTextArea.setText("Informacje");
         infoPanel.add(infoTextArea);
 
@@ -102,6 +106,7 @@ public class WebGUI extends JFrame implements ActionListener {
         this.add(mainPanel);
 
         this.pack();
+        this.setLocationRelativeTo(null);
     }
 
     private void createJFXContent() {
@@ -179,9 +184,31 @@ public class WebGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == countryConfirmButton){
-
+            service = new Service(countryTextEntry.getText());
 
         } else if (e.getSource() == cityConfirmButton){
+            String response         = service.getWeather(cityTextEntry.getText());
+            JSONParser parser       = new JSONParser();
+
+            //json to StringBuilder
+            try {
+                JSONObject parse    = (JSONObject) parser.parse(response);
+
+                JSONObject main     = (JSONObject) parse.get("main");
+                double temp         = (double) main.get("temp");
+                long pressure       = (long) main.get("pressure");
+
+                JSONArray weather   = (JSONArray) parse.get("weather");
+                JSONObject info     = (JSONObject) weather.get(0);
+                String description  = (String) info.get("description");
+
+                infoTextArea.setText("<html>" + "Temp: " + temp + "<br>"
+                                    + "Pressure: " + pressure + "<br>"
+                                    + "Description: " + description + "<br>");
+
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
 
 
         } else if (e.getSource() == currencyConfirmButton){
