@@ -112,10 +112,14 @@ public class WebGUI extends JFrame implements ActionListener {
     private void createJFXContent() {
         webPanel.setLayout(new GridBagLayout());
         webView = new WebView();
-        webView.getEngine().load("https://pl.wikipedia.org/wiki/Polska");
+        webView.getEngine().load("https://pl.wikipedia.org/wiki");
         Scene scene = new Scene(webView);
         jfxPanel.setScene(scene);
         this.pack();
+    }
+
+    private void reloadPage(){
+        webView.getEngine().load("https://pl.wikipedia.org/wiki/" + countryTextEntry.getText());
     }
 
     private void createButtons(){
@@ -172,10 +176,6 @@ public class WebGUI extends JFrame implements ActionListener {
         currencyInputPanel.add(currencyConfirmButton);
     }
 
-    private void reloadPage(){
-
-    }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(WebGUI::new);
     }
@@ -185,6 +185,7 @@ public class WebGUI extends JFrame implements ActionListener {
 
         if (e.getSource() == countryConfirmButton){
             service = new Service(countryTextEntry.getText());
+            Platform.runLater(this::reloadPage);
 
         } else if (e.getSource() == cityConfirmButton){
             String response         = service.getWeather(cityTextEntry.getText());
