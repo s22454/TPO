@@ -60,6 +60,7 @@ public class WebGUI extends JFrame implements ActionListener {
         //window init
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setTitle("Some weather app");
 
 
         //panels init
@@ -85,15 +86,15 @@ public class WebGUI extends JFrame implements ActionListener {
         buttonsPanel.add(countryInputPanel);
         buttonsPanel.add(cityInputPanel);
         buttonsPanel.add(currencyInputPanel);
-        buttonsPanel.setPreferredSize(new Dimension(500,150));
+        buttonsPanel.setPreferredSize(new Dimension(460,150));
 
 
         //info to jPanel
         infoTextArea = new JLabel();
-        infoTextArea.setPreferredSize(new Dimension(500,450));
+        infoTextArea.setPreferredSize(new Dimension(460,450));
         infoTextArea.setVerticalAlignment(JLabel.TOP);
         infoTextArea.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
-        infoTextArea.setText("Informacje");
+        infoTextArea.setText("Information");
         infoPanel.add(infoTextArea);
 
 
@@ -133,7 +134,7 @@ public class WebGUI extends JFrame implements ActionListener {
 
 
         countryTextArea = new JLabel();
-        countryTextArea.setText("Podaj kraj: ");
+        countryTextArea.setText("Country: ");
         countryTextArea.setPreferredSize(new Dimension(100, 20));
         countryInputPanel.add(countryTextArea);
 
@@ -150,7 +151,7 @@ public class WebGUI extends JFrame implements ActionListener {
         cityInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         cityTextArea = new JLabel();
-        cityTextArea.setText("Podaj miasto: ");
+        cityTextArea.setText("City: ");
         cityTextArea.setPreferredSize(new Dimension(100, 20));
         cityInputPanel.add(cityTextArea);
 
@@ -167,7 +168,7 @@ public class WebGUI extends JFrame implements ActionListener {
         currencyInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         currencyTextArea = new JLabel();
-        currencyTextArea.setText("Podaj walute: ");
+        currencyTextArea.setText("Currency: ");
         currencyTextArea.setPreferredSize(new Dimension(100, 20));
         currencyInputPanel.add(currencyTextArea);
 
@@ -200,13 +201,16 @@ public class WebGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        infoTextArea.setText("Information");
+        infoTextArea.setForeground(Color.BLACK);
 
         if (e.getSource() == countryConfirmButton){
             if (isCountryOk(countryTextEntry.getText())){
                 service = new Service(countryTextEntry.getText());
                 Platform.runLater(this::reloadPage);
             } else {
-                infoTextArea.setText("Nieprawidlowa nazwa kraju!");
+                infoTextArea.setForeground(Color.RED);
+                infoTextArea.setText("Wrong country name!");
             }
 
         } else if (e.getSource() == cityConfirmButton){
@@ -231,20 +235,19 @@ public class WebGUI extends JFrame implements ActionListener {
                                     + "Pressure: " + pressure + "<br>"
                                     + "Description: " + description + "<br>");
 
-            } catch (ParseException ex) {
-                ex.printStackTrace();
             } catch (Exception exception){
-                infoTextArea.setText("Nieprawidlowa nazwa miasta!");
+                infoTextArea.setForeground(Color.RED);
+                infoTextArea.setText("Wrong city name!");
             }
 
         } else if (e.getSource() == currencyConfirmButton){
             try {
-                infoTextArea.setText("<html> Kurs wymiany " + service.getCurrency()
-                                        + " na " + currencyComboBox.getSelectedItem()
-                                        + " to: " + service.getRateFor(currencyComboBox.getSelectedItem().toString()));
+                infoTextArea.setText("<html> Exchange rate for " + service.getCurrency()
+                                        + " to " + currencyComboBox.getSelectedItem()
+                                        + " is: <br>" + service.getRateFor(currencyComboBox.getSelectedItem().toString()));
             }catch (Exception exception){
-                exception.printStackTrace();
-                infoTextArea.setText("Podaj najpierw kraj!");
+                infoTextArea.setForeground(Color.RED);
+                infoTextArea.setText("<html> Wrong country name or we dont have <br> exchange rate for this country!");
             }
         }
     }

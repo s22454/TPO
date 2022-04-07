@@ -11,7 +11,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -19,20 +18,14 @@ import java.util.Currency;
 import java.util.Locale;
 
 public class Service {
-    
-    private String country;
+
     private Locale locale;
 
     public Service(String country){
-        this.country = country;
-
         for(Locale l : Locale.getAvailableLocales()) {
             if (l.getDisplayCountry(Locale.ENGLISH).toLowerCase(Locale.ROOT).equals(country.toLowerCase(Locale.ROOT)))
                 this.locale = l;
         }
-
-        System.out.println(locale.getLanguage());
-        System.out.println(Currency.getInstance(locale).toString());
     }
 
     public String getWeather(String city) {
@@ -47,7 +40,6 @@ public class Service {
             return bufferedReader.readLine();
 
         } catch (IOException e) {
-            e.printStackTrace();
             return "FileNotFoundException";
         }
     }
