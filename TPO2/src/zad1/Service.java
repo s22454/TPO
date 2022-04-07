@@ -11,6 +11,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -26,9 +27,12 @@ public class Service {
         this.country = country;
 
         for(Locale l : Locale.getAvailableLocales()) {
-            if (l.getDisplayCountry(Locale.ENGLISH).toLowerCase(Locale.ROOT).equals("Poland".toLowerCase(Locale.ROOT)))
+            if (l.getDisplayCountry(Locale.ENGLISH).toLowerCase(Locale.ROOT).equals(country.toLowerCase(Locale.ROOT)))
                 this.locale = l;
         }
+
+        System.out.println(locale.getLanguage());
+        System.out.println(Currency.getInstance(locale).toString());
     }
 
     public String getWeather(String city) {
@@ -44,9 +48,8 @@ public class Service {
 
         } catch (IOException e) {
             e.printStackTrace();
+            return "FileNotFoundException";
         }
-
-        return null;
     }
 
     public Double getRateFor(String currency) {
@@ -57,11 +60,11 @@ public class Service {
                             new InputStreamReader(
                                     new URL(address).openConnection().getInputStream()))) {
 
-            JSONParser parser = new JSONParser();
-            JSONObject parse = (JSONObject) parser.parse(bufferedReader.readLine());
-            JSONObject rates = (JSONObject) parse.get("rates");
-            double givenCountryRateToEUR = Double.parseDouble(rates.get(currency).toString());
-            double thisCountryRateToEUR = (double) rates.get(Currency.getInstance(locale).toString());
+            JSONParser parser               = new JSONParser();
+            JSONObject parse                = (JSONObject) parser.parse(bufferedReader.readLine());
+            JSONObject rates                = (JSONObject) parse.get("rates");
+            double givenCountryRateToEUR    = Double.parseDouble(rates.get(currency).toString());
+            double thisCountryRateToEUR     = Double.parseDouble(rates.get(Currency.getInstance(locale).toString()).toString());
 
             double exchangeRate = (1 / givenCountryRateToEUR) * thisCountryRateToEUR;
 

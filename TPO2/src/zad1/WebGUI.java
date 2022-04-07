@@ -13,6 +13,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 public class WebGUI extends JFrame implements ActionListener {
 
@@ -44,9 +48,9 @@ public class WebGUI extends JFrame implements ActionListener {
     private JTextField  cityTextEntry;
 
     //user currency input
-    private JLabel      currencyTextArea;
-    private JButton     currencyConfirmButton;
-    private JTextField  currencyTextEntry;
+    private JLabel              currencyTextArea;
+    private JButton             currencyConfirmButton;
+    private JComboBox<String>   currencyComboBox;
 
     //service objects
     Service             service;
@@ -167,13 +171,27 @@ public class WebGUI extends JFrame implements ActionListener {
         currencyTextArea.setPreferredSize(new Dimension(100, 20));
         currencyInputPanel.add(currencyTextArea);
 
-        currencyTextEntry = new JTextField(18);
-        currencyInputPanel.add(currencyTextEntry);
+        String[] currencyList = new String[Currency.getAvailableCurrencies().size()];
+        ArrayList<Currency> currencyArrayList = new ArrayList<>(Currency.getAvailableCurrencies());
+        for (int i = 0; i < currencyList.length; i++)
+            currencyList[i] = currencyArrayList.get(i).toString();
+        currencyComboBox = new JComboBox<>(currencyList);
+        currencyComboBox.setPreferredSize(new Dimension(202,20));
+        currencyInputPanel.add(currencyComboBox);
 
         currencyConfirmButton = new JButton("Confirm currency");
         currencyConfirmButton.addActionListener(this);
         currencyConfirmButton.setPreferredSize(new Dimension(150,20));
         currencyInputPanel.add(currencyConfirmButton);
+    }
+
+    private boolean isCountryOk(String country){
+        for(Locale l : Locale.getAvailableLocales()) {
+            if (l.getDisplayCountry(Locale.ENGLISH).toLowerCase(Locale.ROOT).equals(country.toLowerCase(Locale.ROOT)))
+                return true;
+        }
+
+        return false;
     }
 
     public static void main(String[] args) {
@@ -184,15 +202,21 @@ public class WebGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == countryConfirmButton){
-            service = new Service(countryTextEntry.getText());
-            Platform.runLater(this::reloadPage);
+            if (isCountryOk(countryTextEntry.getText())){
+                service = new Service(countryTextEntry.getText());
+                Platform.runLater(this::reloadPage);
+            } else {
+                infoTextArea.setText("Nieprawidlowa nazwa kraju!");
+            }
 
         } else if (e.getSource() == cityConfirmButton){
-            String response         = service.getWeather(cityTextEntry.getText());
-            JSONParser parser       = new JSONParser();
-
-            //json to StringBuilder
             try {
+                String response     = service.getWeather(cityTextEntry.getText());
+                JSONParser parser   = new JSONParser();
+
+                if (response.equals("FileNotFoundException"))
+                    throw new FileNotFoundException();
+
                 JSONObject parse    = (JSONObject) parser.parse(response);
 
                 JSONObject main     = (JSONObject) parse.get("main");
@@ -209,11 +233,19 @@ public class WebGUI extends JFrame implements ActionListener {
 
             } catch (ParseException ex) {
                 ex.printStackTrace();
+            } catch (Exception exception){
+                infoTextArea.setText("Nieprawidlowa nazwa miasta!");
             }
 
-
         } else if (e.getSource() == currencyConfirmButton){
-            infoTextArea.setText("<html> Kurs wymiany " + service.getCurrency() + " na " + currencyTextEntry.getText() + " to: " + service.getRateFor(currencyTextEntry.getText()));
+            try {
+                infoTextArea.setText("<html> Kurs wymiany " + service.getCurrency()
+                                        + " na " + currencyComboBox.getSelectedItem()
+                                        + " to: " + service.getRateFor(currencyComboBox.getSelectedItem().toString()));
+            }catch (Exception exception){
+                exception.printStackTrace();
+                infoTextArea.setText("Podaj najpierw kraj!");
+            }
         }
     }
 }
