@@ -41,16 +41,19 @@ public class WebGUI extends JFrame implements ActionListener {
     private JLabel      countryTextArea;
     private JButton     countryConfirmButton;
     private JTextField  countryTextEntry;
+    private JCheckBox   countryIsDataOk;
 
     //user city input
     private JLabel      cityTextArea;
     private JButton     cityConfirmButton;
     private JTextField  cityTextEntry;
+    private JCheckBox   cityIsDataOk;
 
     //user currency input
     private JLabel              currencyTextArea;
     private JButton             currencyConfirmButton;
     private JComboBox<String>   currencyComboBox;
+    private JCheckBox           currencyIsDataOk;
 
     //service objects
     Service             service;
@@ -86,12 +89,12 @@ public class WebGUI extends JFrame implements ActionListener {
         buttonsPanel.add(countryInputPanel);
         buttonsPanel.add(cityInputPanel);
         buttonsPanel.add(currencyInputPanel);
-        buttonsPanel.setPreferredSize(new Dimension(460,150));
+        buttonsPanel.setPreferredSize(new Dimension(490,150));
 
 
         //info to jPanel
         infoTextArea = new JLabel();
-        infoTextArea.setPreferredSize(new Dimension(460,450));
+        infoTextArea.setPreferredSize(new Dimension(490,450));
         infoTextArea.setVerticalAlignment(JLabel.TOP);
         infoTextArea.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
         infoTextArea.setText("Information");
@@ -132,6 +135,10 @@ public class WebGUI extends JFrame implements ActionListener {
         //user country input construction
         countryInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+        countryIsDataOk = new JCheckBox();
+        countryIsDataOk.setSelected(false);
+        countryIsDataOk.setEnabled(false);
+        countryInputPanel.add(countryIsDataOk);
 
         countryTextArea = new JLabel();
         countryTextArea.setText("Country: ");
@@ -150,6 +157,11 @@ public class WebGUI extends JFrame implements ActionListener {
         //user city input construction
         cityInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+        cityIsDataOk = new JCheckBox();
+        cityIsDataOk.setSelected(false);
+        cityIsDataOk.setEnabled(false);
+        cityInputPanel.add(cityIsDataOk);
+
         cityTextArea = new JLabel();
         cityTextArea.setText("City: ");
         cityTextArea.setPreferredSize(new Dimension(100, 20));
@@ -167,6 +179,11 @@ public class WebGUI extends JFrame implements ActionListener {
         //user currency input construction
         currencyInputPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+        currencyIsDataOk = new JCheckBox();
+        currencyIsDataOk.setSelected(false);
+        currencyIsDataOk.setEnabled(false);
+        currencyInputPanel.add(currencyIsDataOk);
+
         currencyTextArea = new JLabel();
         currencyTextArea.setText("Currency: ");
         currencyTextArea.setPreferredSize(new Dimension(100, 20));
@@ -177,6 +194,7 @@ public class WebGUI extends JFrame implements ActionListener {
         for (int i = 0; i < currencyList.length; i++)
             currencyList[i] = currencyArrayList.get(i).toString();
         currencyComboBox = new JComboBox<>(currencyList);
+        currencyComboBox.setBackground(Color.WHITE);
         currencyComboBox.setPreferredSize(new Dimension(202,20));
         currencyInputPanel.add(currencyComboBox);
 
@@ -208,7 +226,10 @@ public class WebGUI extends JFrame implements ActionListener {
             if (isCountryOk(countryTextEntry.getText())){
                 service = new Service(countryTextEntry.getText());
                 Platform.runLater(this::reloadPage);
+                countryIsDataOk.setSelected(true);
+                countryIsDataOk.setForeground(Color.black);
             } else {
+                countryIsDataOk.setSelected(false);
                 infoTextArea.setForeground(Color.RED);
                 infoTextArea.setText("Wrong country name!");
             }
@@ -235,7 +256,11 @@ public class WebGUI extends JFrame implements ActionListener {
                                     + "Pressure: " + pressure + "<br>"
                                     + "Description: " + description + "<br>");
 
+                cityIsDataOk.setSelected(true);
+                cityIsDataOk.setForeground(Color.BLACK);
+
             } catch (Exception exception){
+                cityIsDataOk.setSelected(false);
                 infoTextArea.setForeground(Color.RED);
                 infoTextArea.setText("Wrong city name!");
             }
@@ -245,7 +270,11 @@ public class WebGUI extends JFrame implements ActionListener {
                 infoTextArea.setText("<html> Exchange rate for " + service.getCurrency()
                                         + " to " + currencyComboBox.getSelectedItem()
                                         + " is: <br>" + service.getRateFor(currencyComboBox.getSelectedItem().toString()));
+
+                currencyIsDataOk.setSelected(true);
+                currencyIsDataOk.setForeground(Color.BLACK);
             }catch (Exception exception){
+                currencyIsDataOk.setSelected(false);
                 infoTextArea.setForeground(Color.RED);
                 infoTextArea.setText("<html> Wrong country name or we dont have <br> exchange rate for this country!");
             }

@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3ae91a92-a097-4374-bd7e-d14876f18bf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/zad1/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/zad1/Service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/zad1/WebGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/zad1/WebGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -103,7 +102,7 @@
       <workItem from="1649235766958" duration="2380000" />
       <workItem from="1649238181304" duration="638000" />
       <workItem from="1649240335546" duration="23417000" />
-      <workItem from="1649320453882" duration="3816000" />
+      <workItem from="1649320453882" duration="4464000" />
     </task>
     <servers />
   </component>
