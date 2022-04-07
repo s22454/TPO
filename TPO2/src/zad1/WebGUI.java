@@ -21,15 +21,15 @@ import java.util.Locale;
 public class WebGUI extends JFrame implements ActionListener {
 
     //panels
-    private JPanel      mainPanel;
-    private JPanel      webPanel;
-    private JPanel      infoPanel;
-    private JPanel      buttonsPanel;
-    private JPanel      countryInputPanel;
-    private JPanel      cityInputPanel;
-    private JPanel      currencyInputPanel;
-    private JPanel      rightPanel;
-    private JFXPanel    jfxPanel;
+    private final JPanel      mainPanel;
+    private final JPanel      webPanel;
+    private final JPanel      infoPanel;
+    private final JPanel      buttonsPanel;
+    private final JPanel      countryInputPanel;
+    private final JPanel      cityInputPanel;
+    private final JPanel      currencyInputPanel;
+    private final JPanel      rightPanel;
+    private final JFXPanel    jfxPanel;
 
     //country info are
     private JLabel      infoTextArea;
