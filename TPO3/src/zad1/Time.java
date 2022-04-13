@@ -42,10 +42,10 @@ public class Time {
                                 " godz. " + to.format(DateTimeFormatter.ISO_TIME).substring(0, 5) +
 
                                 // info section
-                                "\n - mija: " + daysBetween + ((daysBetween > 1) ? " dni" : " dzień") + ", " +
+                                "\n - mija: " + daysBetween + (!(daysBetween == 1) ? " dni" : " dzień") + ", " +
                                 "tygodni " + (((int) ((daysBetween / 7.0) * 100)) / 100.0) +
                                 "\n - godzin: " + HOURS.between(from, to) + ", minut: " + MINUTES.between(from, to) +
-                                "\n - kalendarzowo: " + durationToString(Period.between(from.toLocalDate(), to.toLocalDate()));
+                                ((!durationToString(Period.between(from.toLocalDate(), to.toLocalDate())).equals(""))? ("\n - kalendarzowo: " + durationToString(Period.between(from.toLocalDate(), to.toLocalDate()))) : "");
 
             } else {
                 LocalDate from = LocalDate.parse(fromText);
@@ -67,9 +67,9 @@ public class Time {
                                 " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
 
                                 // info section
-                                "\n - mija: " + daysBetween + ((daysBetween > 1) ? " dni" : " dzień") + ", " +
+                                "\n - mija: " + daysBetween + (!(daysBetween == 1) ? " dni" : " dzień") + ", " +
                                 "tygodni " + (((int) ((daysBetween / 7.0) * 100)) / 100.0) +
-                                "\n - kalendarzowo: " + durationToString(Period.between(from, to));
+                                ((!durationToString(Period.between(from, to)).equals(""))? ("\n - kalendarzowo: " + durationToString(Period.between(from, to))) : "");
             }
 
 
@@ -99,6 +99,6 @@ public class Time {
 
     public static void main(String[] args) {
         //"2020-03-27T10:00","2020-03-28T10:00"
-        System.out.println(Time.passed("2020-03-27T10:00","2020-03-28T10:00"));
+        System.out.println(Time.passed("2020-03-27","2020-03-28"));
     }
 }
