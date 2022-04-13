@@ -17,62 +17,66 @@ import static java.time.temporal.ChronoUnit.*;
 public class Time {
     public static String passed(String fromText, String toText) {
 
-        String res;
+        try {
+            String res;
 
-        if (fromText.matches(".*T.*") && toText.matches(".*T.*")){
-            LocalDateTime from  = LocalDateTime.parse(fromText);
-            LocalDateTime to    = LocalDateTime.parse(toText);
-            long daysBetween    = DAYS.between(from,to);
+            if (fromText.matches(".*T.*") && toText.matches(".*T.*")) {
+                LocalDateTime from = LocalDateTime.parse(fromText);
+                LocalDateTime to = LocalDateTime.parse(toText);
+                long daysBetween = DAYS.between(from, to);
 
-            res =           // from section
-                            "Od " +
-                            from.getDayOfMonth() + " " +
-                            from.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
-                            from.getYear() +
-                            " (" + from.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
-                            " godz. " + from.format(DateTimeFormatter.ISO_TIME).substring(0, 5) +
+                res =           // from section
+                        "Od " +
+                                from.getDayOfMonth() + " " +
+                                from.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
+                                from.getYear() +
+                                " (" + from.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
+                                " godz. " + from.format(DateTimeFormatter.ISO_TIME).substring(0, 5) +
 
-                            // to section
-                            " do " +
-                            to.getDayOfMonth() + " " +
-                            to.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
-                            to.getYear() +
-                            " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
-                            " godz. " + to.format(DateTimeFormatter.ISO_TIME).substring(0, 5) +
+                                // to section
+                                " do " +
+                                to.getDayOfMonth() + " " +
+                                to.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
+                                to.getYear() +
+                                " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
+                                " godz. " + to.format(DateTimeFormatter.ISO_TIME).substring(0, 5) +
 
-                            // info section
-                            "\n - mija: " + daysBetween + ((daysBetween > 1) ? " dni" : " dzień") + ", " +
-                            "tygodni " + (((int)((daysBetween / 7.0) * 100)) / 100.0) +
-                            "\n - godzin: " + HOURS.between(from,to) + ", minut: " + MINUTES.between(from,to) +
-                            "\n - kalendarzowo: " + durationToString(Period.between(from.toLocalDate(),to.toLocalDate()));
+                                // info section
+                                "\n - mija: " + daysBetween + ((daysBetween > 1) ? " dni" : " dzień") + ", " +
+                                "tygodni " + (((int) ((daysBetween / 7.0) * 100)) / 100.0) +
+                                "\n - godzin: " + HOURS.between(from, to) + ", minut: " + MINUTES.between(from, to) +
+                                "\n - kalendarzowo: " + durationToString(Period.between(from.toLocalDate(), to.toLocalDate()));
 
-        } else {
-            LocalDate from      = LocalDate.parse(fromText);
-            LocalDate to        = LocalDate.parse(toText);
-            long daysBetween    = DAYS.between(from,to);
+            } else {
+                LocalDate from = LocalDate.parse(fromText);
+                LocalDate to = LocalDate.parse(toText);
+                long daysBetween = DAYS.between(from, to);
 
-            res =           // from section
-                            "Od " +
-                            from.getDayOfMonth() + " " +
-                            from.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
-                            from.getYear() +
-                            " (" + from.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
+                res =           // from section
+                        "Od " +
+                                from.getDayOfMonth() + " " +
+                                from.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
+                                from.getYear() +
+                                " (" + from.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
 
-                            // to section
-                            " do " +
-                            to.getDayOfMonth() + " " +
-                            to.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
-                            to.getYear() +
-                            " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
+                                // to section
+                                " do " +
+                                to.getDayOfMonth() + " " +
+                                to.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
+                                to.getYear() +
+                                " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
 
-                            // info section
-                            "\n - mija: " + daysBetween + ((daysBetween > 1) ? " dni" : " dzień") + ", " +
-                            "tygodni " + (((int)((daysBetween / 7.0) * 100)) / 100.0) +
-                            "\n - kalendarzowo: " + durationToString(Period.between(from,to));
+                                // info section
+                                "\n - mija: " + daysBetween + ((daysBetween > 1) ? " dni" : " dzień") + ", " +
+                                "tygodni " + (((int) ((daysBetween / 7.0) * 100)) / 100.0) +
+                                "\n - kalendarzowo: " + durationToString(Period.between(from, to));
+            }
+
+
+            return res;
+        } catch (Exception e){
+            return "*** " + e.getClass().getName() + ": " + e.getMessage();
         }
-
-
-        return res;
     }
 
     private static String durationToString(Period period){

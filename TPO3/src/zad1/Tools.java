@@ -29,8 +29,7 @@ public class Tools {
             Map<String, Object> load = yaml.load(collect);
 
             //crating options obj
-            Map<String, List<String>> clientsMap = new HashMap<>();
-            clientsMap.putAll((Map) load.get("clientsMap"));
+            Map<String, List<String>> clientsMap = (Map) load.get("clientsMap");
 
             return new Options(
                         (String)    load.get("host"),
