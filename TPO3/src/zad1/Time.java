@@ -23,7 +23,12 @@ public class Time {
             if (fromText.matches(".*T.*") && toText.matches(".*T.*")) {
                 LocalDateTime from = LocalDateTime.parse(fromText);
                 LocalDateTime to = LocalDateTime.parse(toText);
+
+                from.atZone(ZoneId.of("Europe/Warsaw"));
+                to.atZone(ZoneId.of("Europe/Warsaw"));
+
                 long daysBetween = DAYS.between(from, to);
+                
 
                 res =           // from section
                         "Od " +
