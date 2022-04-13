@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3ae91a92-a097-4374-bd7e-d14876f18bf8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/zad1/WebGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/zad1/WebGUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +41,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../NAI/cw3" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.21360545" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -102,7 +101,8 @@
       <workItem from="1649235766958" duration="2380000" />
       <workItem from="1649238181304" duration="638000" />
       <workItem from="1649240335546" duration="23417000" />
-      <workItem from="1649320453882" duration="4464000" />
+      <workItem from="1649320453882" duration="5322000" />
+      <workItem from="1649677522438" duration="13000" />
     </task>
     <servers />
   </component>
