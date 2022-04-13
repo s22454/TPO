@@ -21,17 +21,18 @@ public class Time {
             String res;
 
             if (fromText.matches(".*T.*") && toText.matches(".*T.*")) {
-                LocalDateTime from = LocalDateTime.parse(fromText);
-                LocalDateTime to = LocalDateTime.parse(toText);
 
-                from.atZone(ZoneId.of("Europe/Warsaw"));
-                to.atZone(ZoneId.of("Europe/Warsaw"));
+                LocalDateTime fromTmp   = LocalDateTime.parse(fromText);
+                LocalDateTime toTmp     = LocalDateTime.parse(toText);
 
-                long daysBetween = DAYS.between(from, to);
-                
+                ZonedDateTime from      = ZonedDateTime.of(fromTmp, ZoneId.of("Europe/Warsaw"));
+                ZonedDateTime to        = ZonedDateTime.of(toTmp, ZoneId.of("Europe/Warsaw"));
+
+                long daysBetween        = DAYS.between(from, to);
+
 
                 res =           // from section
-                        "Od " +
+                                "Od " +
                                 from.getDayOfMonth() + " " +
                                 from.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
                                 from.getYear() +
@@ -48,7 +49,7 @@ public class Time {
 
                                 // info section
                                 "\n - mija: " + daysBetween + (!(daysBetween == 1) ? " dni" : " dzień") + ", " +
-                                "tygodni " + (((int) ((daysBetween / 7.0) * 100)) / 100.0) +
+                                "tygodni " + ((Math.round((daysBetween / 7.0) * 100)) / 100.0) +
                                 "\n - godzin: " + HOURS.between(from, to) + ", minut: " + MINUTES.between(from, to) +
                                 ((!durationToString(Period.between(from.toLocalDate(), to.toLocalDate())).equals(""))? ("\n - kalendarzowo: " + durationToString(Period.between(from.toLocalDate(), to.toLocalDate()))) : "");
 
@@ -58,7 +59,7 @@ public class Time {
                 long daysBetween = DAYS.between(from, to);
 
                 res =           // from section
-                        "Od " +
+                                "Od " +
                                 from.getDayOfMonth() + " " +
                                 from.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
                                 from.getYear() +
@@ -73,7 +74,7 @@ public class Time {
 
                                 // info section
                                 "\n - mija: " + daysBetween + (!(daysBetween == 1) ? " dni" : " dzień") + ", " +
-                                "tygodni " + (((int) ((daysBetween / 7.0) * 100)) / 100.0) +
+                                "tygodni " + ((Math.round((daysBetween / 7.0) * 100)) / 100.0) +
                                 ((!durationToString(Period.between(from, to)).equals(""))? ("\n - kalendarzowo: " + durationToString(Period.between(from, to))) : "");
             }
 
@@ -88,22 +89,17 @@ public class Time {
         StringBuilder res = new StringBuilder();
 
         if (period.getYears() >= 1){
-           res.append(period.getYears() + ((period.getYears() == 1)? " rok" : (period.getYears() == 2)? " lata" : " lat"));
+           res.append(period.getYears() + ((period.getYears() == 1)? " rok" : (period.getYears() > 1 && period.getYears() < 5)? " lata" : " lat"));
         }
 
         if (period.getMonths() >= 1){
-            res.append(((res.length() > 0)? " " : "") + period.getMonths() + ((period.getMonths() == 1)? " miesiąc" : (period.getMonths() > 4)? " miecięcy" : " miesiące"));
+            res.append(((res.length() > 0)? ", " : "") + period.getMonths() + ((period.getMonths() == 1)? " miesiąc" : (period.getMonths() > 4)? " miecięcy" : " miesiące"));
         }
 
         if (period.getDays() >= 1) {
-            res.append(((res.length() > 0)? " " : "") + period.getDays() + ((period.getDays() == 1) ? " dzień" : " dni"));
+            res.append(((res.length() > 0)? ", " : "") + period.getDays() + ((period.getDays() == 1) ? " dzień" : " dni"));
         }
 
         return res.toString();
-    }
-
-    public static void main(String[] args) {
-        //"2020-03-27T10:00","2020-03-28T10:00"
-        System.out.println(Time.passed("2020-03-27","2020-03-28"));
     }
 }
