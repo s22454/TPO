@@ -28,7 +28,7 @@ public class Time {
                 ZonedDateTime from      = ZonedDateTime.of(fromTmp, ZoneId.of("Europe/Warsaw"));
                 ZonedDateTime to        = ZonedDateTime.of(toTmp, ZoneId.of("Europe/Warsaw"));
 
-                long daysBetween        = DAYS.between(from, to);
+                long daysBetween        = DAYS.between(from.toLocalDate(), to.toLocalDate());
 
 
                 res =           // from section
