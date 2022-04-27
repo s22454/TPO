@@ -29,6 +29,7 @@ public class Client {
 
     public void connect() {
         try {
+            System.out.println("Lacze z serverem!");
             channel = SocketChannel.open(new InetSocketAddress(host, port));
             channel.configureBlocking(false);
         } catch (IOException e) {
@@ -38,10 +39,10 @@ public class Client {
 
     public String send(String s) {
         try {
+            System.out.println("Wysylam: " + s);
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-            byteBuffer.put(s.getBytes(StandardCharsets.UTF_8));
 
-            channel.write(byteBuffer);
+            channel.write(ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)));
             byteBuffer.clear();
 
             channel.read(byteBuffer);

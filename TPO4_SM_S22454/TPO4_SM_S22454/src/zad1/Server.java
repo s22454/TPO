@@ -15,8 +15,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class Server {
 
@@ -25,17 +25,20 @@ public class Server {
     
     private String  host;
     private int     port;
-
     private boolean serverIsRunning;
+
+    private HashMap<String, ArrayList<String>> logs;
 
     public Server(String host, int port) {
         this.host = host;
         this.port = port;
         this.serverIsRunning = false;
+        this.logs = new HashMap<>();
     }
 
     public void startServer() {
         try {
+            System.out.println("Server Startuje!");
             serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.configureBlocking(false);
             serverSocketChannel.socket().bind(new InetSocketAddress(host, port));
@@ -64,7 +67,7 @@ public class Server {
 
                     if (key.isReadable()){
                         SocketChannel socketChannel = (SocketChannel) key.channel();
-                        // metoda do obslugi zlecenia
+                        serviceRequest(socketChannel);
                     }
                 }
             }
@@ -74,6 +77,7 @@ public class Server {
     }
 
     public void stopServer() {
+        serverIsRunning = false;
     }
 
     public boolean getServerLog() {
@@ -86,7 +90,9 @@ public class Server {
         try {
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
             socketChannel.read(byteBuffer);
-            System.out.println(new String(byteBuffer.array()));
+            byteBuffer.flip();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
