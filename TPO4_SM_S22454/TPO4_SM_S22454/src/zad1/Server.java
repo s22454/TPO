@@ -23,5 +23,6 @@ public class Server {
     }
 
     public boolean getServerLog() {
+        return true;
     }
 }
