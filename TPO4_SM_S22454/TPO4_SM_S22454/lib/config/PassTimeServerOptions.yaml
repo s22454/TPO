@@ -1,2 +1,0 @@
-concurMode: true   # czy klienci działają równolegle?
-showSendRes: false  # czy pokazywać zwrócone przez serwer wyniki metody send(...)

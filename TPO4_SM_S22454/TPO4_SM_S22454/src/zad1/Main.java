@@ -33,7 +33,7 @@ public class Main {
       if (concur) {
         ClientTask ctask = ClientTask.create(c, reqList, showRes);
         ctasks.add(ctask);
-        //es.execute(ctask);
+        es.execute(ctask);
       } else {
         c.connect();
         c.send("login " + id);

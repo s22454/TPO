@@ -7,6 +7,8 @@
 package zad1;
 
 
+import com.sun.media.jfxmediaimpl.HostUtils;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -29,7 +31,6 @@ public class Client {
 
     public void connect() {
         try {
-            System.out.println("Lacze z serverem!");
             channel = SocketChannel.open(new InetSocketAddress(host, port));
             channel.configureBlocking(false);
         } catch (IOException e) {
@@ -39,7 +40,6 @@ public class Client {
 
     public String send(String s) {
         try {
-            System.out.println("Wysylam: " + s);
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 
             channel.write(ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)));
@@ -48,7 +48,7 @@ public class Client {
             channel.read(byteBuffer);
             byteBuffer.flip();
 
-            return new String(byteBuffer.array());
+            return String.valueOf(StandardCharsets.UTF_8.decode(byteBuffer));
 
         } catch (IOException e) {
             e.printStackTrace();

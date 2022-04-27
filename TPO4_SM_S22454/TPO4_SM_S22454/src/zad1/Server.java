@@ -7,7 +7,6 @@
 package zad1;
 
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -37,41 +36,50 @@ public class Server {
     }
 
     public void startServer() {
-        try {
-            System.out.println("Server Startuje!");
-            serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.configureBlocking(false);
-            serverSocketChannel.socket().bind(new InetSocketAddress(host, port));
-            serverIsRunning = true;
+        new Thread(() -> {
+            try {
+                serverSocketChannel = ServerSocketChannel.open();
+                serverSocketChannel.configureBlocking(false);
+                serverSocketChannel.socket().bind(new InetSocketAddress(host, port));
+                serverIsRunning = true;
 
-            selector = Selector.open();
-            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+                selector = Selector.open();
+                serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-            while(serverIsRunning) {
-                selector.select();
+                while(serverIsRunning) {
+                    selector.select();
 
-                Set keys = selector.selectedKeys();
-                Iterator iterator = keys.iterator();
+                    Set keys = selector.selectedKeys();
+                    Iterator iterator = keys.iterator();
 
-                while(iterator.hasNext()){
+                    while(iterator.hasNext()){
 
-                    SelectionKey key = (SelectionKey) iterator.next();
-                    iterator.remove();
+                        SelectionKey key = (SelectionKey) iterator.next();
+                        iterator.remove();
 
-                    if (key.isAcceptable()){
-                        SocketChannel socketChannel = serverSocketChannel.accept();
-                        socketChannel.configureBlocking(false);
-                        socketChannel.register(selector, SelectionKey.OP_READ);
-                        continue;
-                    }
+                        if (key.isAcceptable()){
+                            SocketChannel socketChannel = serverSocketChannel.accept();
+                            socketChannel.configureBlocking(false);
+                            socketChannel.register(selector, SelectionKey.OP_READ);
+                            continue;
+                        }
 
-                    if (key.isReadable()){
-                        SocketChannel socketChannel = (SocketChannel) key.channel();
-                        serviceRequest(socketChannel);
+                        if (key.isReadable()){
+                            SocketChannel socketChannel = (SocketChannel) key.channel();
+                            serviceRequest(socketChannel);
+                        }
                     }
                 }
+
+//                Thread.currentThread().interrupt();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
+        }).start();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -80,8 +88,8 @@ public class Server {
         serverIsRunning = false;
     }
 
-    public boolean getServerLog() {
-        return true;
+    public String getServerLog() {
+        return "log";
     }
 
     private void serviceRequest(SocketChannel socketChannel){
@@ -91,7 +99,26 @@ public class Server {
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
             socketChannel.read(byteBuffer);
             byteBuffer.flip();
+            String request = String.valueOf(StandardCharsets.UTF_8.decode(byteBuffer));
 
+            System.out.println(request);
+
+            if (request.matches("login .*")){
+
+                byteBuffer.clear();
+                socketChannel.write(ByteBuffer.wrap("logged in".getBytes(StandardCharsets.UTF_8)));
+
+            } else if (request.matches("bye")){
+
+                byteBuffer.clear();
+                socketChannel.write(ByteBuffer.wrap("logged out".getBytes(StandardCharsets.UTF_8)));
+
+            } else if (request.matches("bye and log transfer")){
+
+                byteBuffer.clear();
+                socketChannel.write(ByteBuffer.wrap("zawartosc".getBytes(StandardCharsets.UTF_8)));
+
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
