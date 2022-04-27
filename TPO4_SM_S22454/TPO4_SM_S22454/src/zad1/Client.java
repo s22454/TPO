@@ -45,6 +45,12 @@ public class Client {
             channel.write(ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)));
             byteBuffer.clear();
 
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             channel.read(byteBuffer);
             byteBuffer.flip();
 

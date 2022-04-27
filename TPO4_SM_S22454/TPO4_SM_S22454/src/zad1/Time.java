@@ -34,17 +34,17 @@ public class Time {
                 res =           // from section
                         "Od " +
                                 from.getDayOfMonth() + " " +
-                                from.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
+                                from.getMonth().getDisplayName(TextStyle.FULL, new Locale("pl","PL")) + " " +
                                 from.getYear() +
-                                " (" + from.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
+                                " (" + from.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pl","PL")) + ")" +
                                 " godz. " + from.format(DateTimeFormatter.ISO_TIME).substring(0, 5) +
 
                                 // to section
                                 " do " +
                                 to.getDayOfMonth() + " " +
-                                to.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
+                                to.getMonth().getDisplayName(TextStyle.FULL, new Locale("pl","PL")) + " " +
                                 to.getYear() +
-                                " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
+                                " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pl","PL")) + ")" +
                                 " godz. " + to.format(DateTimeFormatter.ISO_TIME).substring(0, 5) +
 
                                 // info section
@@ -61,16 +61,16 @@ public class Time {
                 res =           // from section
                         "Od " +
                                 from.getDayOfMonth() + " " +
-                                from.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
+                                from.getMonth().getDisplayName(TextStyle.FULL, new Locale("pl","PL")) + " " +
                                 from.getYear() +
-                                " (" + from.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
+                                " (" + from.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pl","PL")) + ")" +
 
                                 // to section
                                 " do " +
                                 to.getDayOfMonth() + " " +
-                                to.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " +
+                                to.getMonth().getDisplayName(TextStyle.FULL, new Locale("pl","PL")) + " " +
                                 to.getYear() +
-                                " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ")" +
+                                " (" + to.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pl","PL")) + ")" +
 
                                 // info section
                                 "\n - mija: " + daysBetween + (!(daysBetween == 1) ? " dni" : " dzień") + ", " +

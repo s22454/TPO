@@ -26,13 +26,15 @@ public class Server {
     private int     port;
     private boolean serverIsRunning;
 
-    private HashMap<String, ArrayList<String>> logs;
+    private HashMap<String, ArrayList<String>>  logs;
+    private String                              nowLogged;
 
     public Server(String host, int port) {
         this.host = host;
         this.port = port;
         this.serverIsRunning = false;
         this.logs = new HashMap<>();
+        nowLogged = "";
     }
 
     public void startServer() {
@@ -101,25 +103,56 @@ public class Server {
             byteBuffer.flip();
             String request = String.valueOf(StandardCharsets.UTF_8.decode(byteBuffer));
 
-            System.out.println(request);
+            if (request.matches("login\\s.*") && nowLogged.length() == 0){
 
-            if (request.matches("login .*")){
+                logs.put(request.substring(6), new ArrayList<>());
+                nowLogged = request.substring(6);
+                logs.get(nowLogged).add("=== " + nowLogged + " log start ===");
+                logs.get(nowLogged).add("logged in");
 
                 byteBuffer.clear();
                 socketChannel.write(ByteBuffer.wrap("logged in".getBytes(StandardCharsets.UTF_8)));
 
             } else if (request.matches("bye")){
 
+                logs.get(nowLogged).add("logged out");
+                logs.get(nowLogged).add("=== " + nowLogged + " log end ===");
+                nowLogged = "";
+
                 byteBuffer.clear();
                 socketChannel.write(ByteBuffer.wrap("logged out".getBytes(StandardCharsets.UTF_8)));
 
             } else if (request.matches("bye and log transfer")){
 
+                logs.get(nowLogged).add("logged out");
+                logs.get(nowLogged).add("=== " + nowLogged + " log end ===");
+
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String s : logs.get(nowLogged))
+                    stringBuilder.append(s + "\n");
+
+
+
+                nowLogged = "";
+
                 byteBuffer.clear();
-                socketChannel.write(ByteBuffer.wrap("zawartosc".getBytes(StandardCharsets.UTF_8)));
+                socketChannel.write(ByteBuffer.wrap(stringBuilder.toString().getBytes(StandardCharsets.UTF_8)));
+
+            } else if (request.matches("\\d{4}-\\d{2}-\\d{2}\\s\\d{4}-\\d{2}-\\d{2}") || request.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}\\s\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}")){
+
+                int x       = request.indexOf(" ");
+                String from = request.substring(0, x);
+                String to   = request.substring(x + 1);
+                String res  = Time.passed(from,to);
+
+                logs.get(nowLogged).add("Request: " + request);
+                logs.get(nowLogged).add("Result:");
+                logs.get(nowLogged).add(res);
+
+                byteBuffer.clear();
+                socketChannel.write(ByteBuffer.wrap(res.getBytes(StandardCharsets.UTF_8)));
 
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
