@@ -183,7 +183,6 @@ public class Server {
 
                 byteBuffer.clear();
                 socketChannel.write(ByteBuffer.wrap(res.getBytes(StandardCharsets.UTF_8)));
-
             }
         } catch (IOException e) {
             e.printStackTrace();

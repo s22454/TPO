@@ -29,6 +29,10 @@ public class Client {
         this.id = id;
     }
 
+    public String getId(){
+        return id;
+    }
+
     public void connect() {
         try {
             channel = SocketChannel.open(new InetSocketAddress(host, port));
