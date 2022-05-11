@@ -9,11 +9,13 @@ package zad1;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,9 +31,9 @@ public class ChatServer {
     private int     port;
     private boolean serverIsRunning;
 
-    private ArrayList<String>                   serverLogs;
     private HashMap<String, ArrayList<String>>  usersLogs;
-    private HashMap<SocketAddress,String>       loggedUsers;
+    private HashMap<String, SocketChannel>      loggedUsers;
+    private ArrayList<String>                   serverLogs;
 
     public ChatServer(String host, int port) {
         this.host               = host;
@@ -90,13 +92,76 @@ public class ChatServer {
     }
 
     public void serviceRequest(SocketChannel socketChannel){
+        if (!socketChannel.isOpen()) return;
 
+        try {
+            ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+            socketChannel.read(byteBuffer);
+            byteBuffer.flip();
+            String request = String.valueOf(StandardCharsets.UTF_8.decode(byteBuffer));
+
+
+            if (request.matches("login\\s.+")){
+
+                String currentUser = request.substring(6);
+                loggedUsers.put(currentUser, socketChannel);
+                usersLogs.put(currentUser, new ArrayList<>());
+                usersLogs.get(currentUser).add("=== " + currentUser + " chat view");
+
+                serverLogs.add(LocalDateTime.now().toLocalTime() + " " + currentUser + " logged in");
+
+                sendToAll(currentUser + " logged in");
+
+            } else if (request.matches("log out\\s.+")) {
+
+                String currentUser = request.substring(8);
+
+                sendToAll(currentUser + " logged out");
+
+                loggedUsers.remove(currentUser);
+                serverLogs.add(LocalDateTime.now().toLocalTime() + " " + currentUser + " logged out");
+
+            } else {
+
+                String currentUser = "";
+                for (String s : loggedUsers.keySet())
+                    if (loggedUsers.get(s) == socketChannel)
+                        currentUser = s;
+
+                sendToAll(currentUser + ": " + request);
+
+                serverLogs.add(LocalDateTime.now().toLocalTime() + " " + currentUser + ": " + request);
+
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void sendToAll(String s){
+        for (String user : loggedUsers.keySet()) {
+            try {
+                usersLogs.get(user).add(s);
+                loggedUsers.get(user).write(ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void stopServer() {
+        serverIsRunning = false;
     }
 
-    public boolean getServerLog() {
+    public String getServerLog() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String s : serverLogs)
+            stringBuilder.append(s + "\n");
+
+        return stringBuilder.toString();
     }
 
 

@@ -24,6 +24,7 @@ public class ChatClientTask implements Runnable{
     public void get() throws InterruptedException, ExecutionException {
     }
 
-    public Object getClient() {
+    public ChatClient getClient(){
+
     }
 }
