@@ -45,6 +45,7 @@ public class ChatServer {
     }
 
     public void startServer() {
+
         serverThread = new Thread(() -> {
             try {
                 serverSocketChannel = ServerSocketChannel.open();
@@ -80,15 +81,19 @@ public class ChatServer {
                         }
                     }
                 }
-
-                Thread.currentThread().interrupt();
-
             } catch (IOException e) {
-                e.printStackTrace();
+               e.printStackTrace();
             }
         });
 
         serverThread.start();
+        System.out.println("Server started\n");
+
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void serviceRequest(SocketChannel socketChannel){
@@ -99,7 +104,7 @@ public class ChatServer {
             socketChannel.read(byteBuffer);
             byteBuffer.flip();
             String request = String.valueOf(StandardCharsets.UTF_8.decode(byteBuffer));
-
+//            System.out.println("Jestem server dostałem: " + request);
 
             if (request.matches("login\\s.+")){
 
@@ -110,6 +115,7 @@ public class ChatServer {
 
                 serverLogs.add(LocalDateTime.now().toLocalTime() + " " + currentUser + " logged in");
 
+                char tmp = 219;
                 sendToAll(currentUser + " logged in");
 
             } else if (request.matches("log out\\s.+")) {
@@ -121,20 +127,23 @@ public class ChatServer {
                 loggedUsers.remove(currentUser);
                 serverLogs.add(LocalDateTime.now().toLocalTime() + " " + currentUser + " logged out");
 
-            } else {
+            } else if (request.matches("got it")){
+
+            }else {
 
                 String currentUser = "";
                 for (String s : loggedUsers.keySet())
                     if (loggedUsers.get(s) == socketChannel)
                         currentUser = s;
 
-                sendToAll(currentUser + ": " + request);
+                char tmp = 219;
+                sendToAll(currentUser + ": " + request + tmp);
 
                 serverLogs.add(LocalDateTime.now().toLocalTime() + " " + currentUser + ": " + request);
 
             }
 
-        }catch (IOException e){
+        }catch (IOException  e){
             e.printStackTrace();
         }
     }
@@ -143,7 +152,9 @@ public class ChatServer {
         for (String user : loggedUsers.keySet()) {
             try {
                 usersLogs.get(user).add(s);
+//                System.out.println("Jako serwer wysyłam: " + s);
                 loggedUsers.get(user).write(ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)));
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -151,7 +162,24 @@ public class ChatServer {
     }
 
     public void stopServer() {
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        while (loggedUsers.size() != 0){
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         serverIsRunning = false;
+        serverThread.interrupt();
+        System.out.println("Server stopped\n");
     }
 
     public String getServerLog() {
