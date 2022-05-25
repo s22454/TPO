@@ -73,7 +73,7 @@
     <div style="padding: 15px"></div>
 
     <!-- Button to see all books -->
-    <a href="search">
+    <a href="browse">
         <div class="allBooksButton">
             Przeglądanie książek
         </div>
