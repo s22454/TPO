@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="TPO6_SM_S22454" target="1.8" />
+      <module name="TPO6_SM_S22454" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>
