@@ -1,0 +1,130 @@
+.body{
+    background-color: #4c566a;
+    padding-top: 50px;
+}
+
+.title{
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+    color: #38d9a9;
+    font-size: 40px
+}
+
+.input_section{
+    text-align: center;
+    font-size: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.bait{
+    color: #ebcb8b;
+}
+
+.input{
+    padding: 8px;
+
+}
+
+input[type=text] {
+    font-size: 20px;
+}
+
+.button{
+    border: none;
+    color: #00ccff;
+    background-color: #434c5e;
+    padding: 7px 17px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button:hover{
+    background-color: white;
+    color: #f08c00;
+}
+
+.mainSection{
+    width: 70%;
+    margin: auto;
+}
+
+.message{
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+    padding-bottom: 20px;
+    color: #38d9a9;
+    font-size: 40px;
+    border-bottom: 1px solid #ccc;
+}
+
+.allBooksButton{
+    background-color: #3b5bdb;
+    text-align: center;
+    color: #eceff4;
+    font-size: 25px;
+    padding: 8px;
+    float: left;
+    width: 240px;
+}
+
+.allBooksButton:hover{
+    background-color: #5c7cfa;
+}
+
+.searchBookButton{
+    background-color: #e8590c;
+    text-align: center;
+    color: #eceff4;
+    font-size: 25px;
+    padding: 8px;
+    float: right;
+    width: 240px;
+}
+
+.searchBookButton:hover{
+    background-color: #ff922b;
+}
+
+.row{
+    margin: auto;
+    display: flex;
+    padding-bottom: 20px;
+}
+
+.book{
+    width: 30%;
+    background-color: #EDD19C;
+    display: inline-block;
+}
+
+.bookTitle{
+    text-align: center;
+    font-size: 30px;
+}
+
+.author{
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 25px;
+}
+
+.releaseDate{
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 25px;
+}
+
+.bookDescription{
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 20px;
+    word-wrap: break-word;
+}

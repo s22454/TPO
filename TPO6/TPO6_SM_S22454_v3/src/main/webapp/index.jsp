@@ -1,13 +1,38 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-    <title>JSP - Hello World</title>
+    <title>Książkoland</title>
+    <link rel="stylesheet" href="Styles/style.css">
 </head>
-<body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
-</body>
+
+    <body class="body">
+
+        <!-- Main section of page -->
+        <div class="mainSection" style="width: 35%">
+
+            <!-- Message to choose what user want to do -->
+            <div class="message">
+                Wybierz co chcesz zrobić
+            </div>
+
+            <!-- Empyt block for spaceing -->
+            <div style="padding: 15px"></div>
+
+            <!-- Button to see all books -->
+            <a href="browse">
+                <div class="allBooksButton">
+                    Przeglądanie książek
+                </div>
+            </a>
+
+            <!-- Button to search a book -->
+            <a href="search">
+                <div class="searchBookButton">
+                    Szukaj książki
+                </div>
+            </a>
+
+        </div>
+
+    </body>
 </html>
